@@ -1,33 +1,37 @@
-import {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 
 const width = 8;
-const candyColors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
-
+const candyColors = ["red", "orange", "yellow", "green", "blue", "purple"];
 
 const App = () => {
-
-  const[currentColorArragement, setCurrentColorArrangement] = useState([]);
+  const [currentColorArrangement, setCurrentColorArrangement] = useState([]);
 
   const createBoard = () => {
     const randomColorArrangement = [];
-    const board = [];
-    for (let i = 0; i < width * width ; i++) {
+    for (let i = 0; i < width * width; i++) {
       const randomColor = Math.floor(Math.random() * candyColors.length);
       randomColorArrangement.push(randomColor);
+    }
+    setCurrentColorArrangement(randomColorArrangement);
+  };
 
-  }
-  setCurrentColorArrangement(randomColorArrangement);
-  }
-  useEffect =(() => {
-    createBoard(), []
-  }
-
-
+  useEffect(() => {
+    createBoard();
+  }, []);
 
   return (
-    <div>
+    <div className="app">
+      <div className="game">
+        {currentColorArrangement.map((candyColor, index) => (
+          <img
+            key={index}
+            style={{ backgroundColor: candyColors[candyColor] }}
+            alt={candyColor}
+          />
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
