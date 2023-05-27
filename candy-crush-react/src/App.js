@@ -28,7 +28,8 @@ const App = () => {
       const rowOfFour = [i, i + 1, i + 2, i + 3];
       const decidedColor = currentColorArrangement[i];
       const notValid = [
-        5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63,
+        5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53,
+        54, 55, 62, 63,
       ];
 
       if (notValid.includes(i)) continue;
@@ -65,7 +66,8 @@ const App = () => {
       const rowOfThree = [i, i + 1, i + 2];
       const decidedColor = currentColorArrangement[i];
       const notValid = [
-        5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63,
+        5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53,
+        54, 55, 62, 63,
       ];
 
       if (notValid.includes(i)) continue;
@@ -78,6 +80,35 @@ const App = () => {
         rowOfThree.forEach((square) => (currentColorArrangement[square] = ""));
       }
     }
+  };
+
+  const moveIntoSquareBelow = () => {
+    for (let i = 0; i < 55; i++) {
+      const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
+      const isFirstRow = firstRow.includes(i);
+
+      if (isFirstRow && currentColorArrangement[i] === "") {
+        let randomNumber = Math.floor(Math.random() * candyColors.length);
+        currentColorArrangement[i] = randomNumber;
+      }
+
+      if (currentColorArrangement[i + width] === "") {
+        currentColorArrangement[i + width] = currentColorArrangement[i];
+        currentColorArrangement[i] = "";
+      }
+    }
+  };
+
+  const dragStart = () => {
+    console.log("drag start");
+  };
+
+  const dragDrop = () => {
+    console.log("drag drop");
+  };
+
+  const dragEnd = () => {
+    console.log("drag end");
   };
 
   const createBoard = () => {
@@ -100,6 +131,7 @@ const App = () => {
       checkForColumnOfThree();
       checkForRowOfThree();
       setCurrentColorArrangement([...currentColorArrangement]);
+      moveIntoSquareBelow();
     }, 100);
     return () => clearInterval(timer);
   }, [
@@ -107,10 +139,11 @@ const App = () => {
     checkForRowOfFour,
     checkForColumnOfThree,
     checkForRowOfThree,
+    moveIntoSquareBelow,
     currentColorArrangement,
   ]);
 
-  console.log(currentColorArrangement);
+  //console.log(currentColorArrangement);
 
   return (
     <div className="app">
@@ -120,6 +153,14 @@ const App = () => {
             key={index}
             style={{ backgroundColor: candyColors[candyColor] }}
             alt={candyColor}
+            data-id={index}
+            draggable="true"
+            onDragStart={dragStart}
+            onDragOver={(e: DragEvent<HTMLImageElement>) => e.preventDefault()}
+            onDragEnter={(e: DragEvent<HTMLImageElement>) => e.preventDefault()}
+            onDragLeave={(e: DragEvent<HTMLImageElement>) => e.preventDefault()}
+            onDrop={dragDrop} 
+            onDragEnd={dragEnd}
           />
         ))}
       </div>
