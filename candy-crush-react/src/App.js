@@ -5,9 +5,8 @@ const candyColors = ["red", "orange", "yellow", "green", "blue", "purple"];
 
 const App = () => {
   const [currentColorArrangement, setCurrentColorArrangement] = useState([]);
-  const[squareBeingDragged, setSquareBeingDragged] = useState(null)
-  const[squareBeingReplaced, setSquareBeingReplaced] = useState(null)
-
+  const [squareBeingDragged, setSquareBeingDragged] = useState(null);
+  const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
 
   const checkForColumnOfFour = () => {
     for (let i = 0; i <= 39; i++) {
@@ -60,7 +59,6 @@ const App = () => {
       ) {
         columnOfThree.forEach(
           (square) => (currentColorArrangement[square] = "")
-
         );
         return true;
       }
@@ -107,46 +105,61 @@ const App = () => {
   };
 
   const dragStart = (e) => {
-    console.log(e.target)
+    console.log(e.target);
     console.log("drag start");
-    setSquareBeingDragged(e.target)
+    setSquareBeingDragged(e.target);
   };
 
-  const dragDrop = () => {
-    console.log(e.target)
+  const dragDrop = (e) => {
+    console.log(e.target);
     console.log("drag drop");
-    setSquareBeingReplaced(e.target)
-
+    setSquareBeingReplaced(e.target);
   };
 
-  const dragEnd = () => {
+  const dragEnd = (e) => {
     console.log("drag end");
-    const squareBeingDraggedId = parseInt(squareBeingDragged.getAttribute('data-id'))
-    const squareBeingReplacedId = parseInt(squareBeingReplaced.getAttribute('data-id'))
+    const squareBeingDraggedId = parseInt(
+      squareBeingDragged.getAttribute("data-id")
+    );
+    const squareBeingReplacedId = parseInt(
+      squareBeingReplaced.getAttribute("data-id")
+    );
 
-    currentColorArrangement[squareBeingReplacedId] = squareBeingDragged.style.backgroundColor
-    currentColorArrangement[squareBeingDraggedId] = squareBeingReplaced.style.backgroundColor
+    currentColorArrangement[squareBeingReplacedId] =
+      squareBeingDragged.style.backgroundColor;
+    currentColorArrangement[squareBeingDraggedId] =
+      squareBeingReplaced.style.backgroundColor;
 
-    console.log('squareBeingdraggedId', squareBeingDraggedId)
-    console.log('squareBeingReplacedId', squareBeingReplacedId)
+    console.log("squareBeingdraggedId", squareBeingDraggedId);
+    console.log("squareBeingReplacedId", squareBeingReplacedId);
 
-    const validMoves = [squareBeingDraggedId -1, squareBeingDraggedId -width, squareBeingDraggedId +1, squareBeingDraggedId +width]
-    const validMove = validMoves.includes(squareBeingReplacedId)
+    const validMoves = [
+      squareBeingDraggedId - 1,
+      squareBeingDraggedId - width,
+      squareBeingDraggedId + 1,
+      squareBeingDraggedId + width,
+    ];
+    const validMove = validMoves.includes(squareBeingReplacedId);
 
-    const isAcolumnOfFour = checkForColumnOfFour()
-    const isARawOfFour = checkForRowOfFour()
-    const isAColumnOfThree = checkForColumnOfThree()
-    const isARawOfThree = checkForRowOfThree()
+    const isAcolumnOfFour = checkForColumnOfFour();
+    const isARawOfFour = checkForRowOfFour();
+    const isAColumnOfThree = checkForColumnOfThree();
+    const isARawOfThree = checkForRowOfThree();
 
-    if(squareBeingReplacedId && validMove && (isAcolumnOfFour || isARawOfFour || isAColumnOfThree || isARawOfThree)){
-      setSquareBeingReplaced(null)
-      setSquareBeingDragged(null)
-    }else{
-      setCurrentColorArrangement[squareBeingReplacedId] = squareBeingReplaced.style.backgroundColor
+    if (
+      squareBeingReplacedId &&
+      validMove &&
+      (isAcolumnOfFour || isARawOfFour || isAColumnOfThree || isARawOfThree)
+    ) {
+      setSquareBeingReplaced(null);
+      setSquareBeingDragged(null);
+    } else {
+      currentColorArrangement[squareBeingReplacedId] =
+        squareBeingReplaced.style.backgroundColor;
+      currentColorArrangement[squareBeingDraggedId] =
+        squareBeingDragged.style.backgroundColor;
+        setCurrentColorArrangement([...currentColorArrangement]);
     }
-
-
-
   };
 
   const createBoard = () => {
